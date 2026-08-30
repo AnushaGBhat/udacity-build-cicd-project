@@ -1,9 +1,15 @@
 name: Backend Continuous Integration
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'starter/backend/**'
+
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'starter/backend/**'
 
@@ -75,3 +81,7 @@ jobs:
       - name: Build Docker image
         working-directory: starter/backend
         run: docker build -t backend .
+
+
+
+  
