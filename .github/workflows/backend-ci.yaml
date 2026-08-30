@@ -81,7 +81,3 @@ jobs:
       - name: Build Docker image
         working-directory: starter/backend
         run: docker build -t backend .
-
-
-
-  
