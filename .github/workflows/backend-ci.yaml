@@ -1,22 +1,15 @@
 name: Backend Continuous Integration
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'starter/backend/**'
-
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - 'starter/backend/**'
 
   workflow_dispatch:
 
 jobs:
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -35,14 +28,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: starter/backend
-        run: |
-          pipenv install
-          pipenv install flake8
+        run: pipenv install
 
       - name: Run lint
         working-directory: starter/backend
         run: pipenv run lint
-
 
   test:
     name: Test
@@ -67,7 +57,6 @@ jobs:
       - name: Run tests
         working-directory: starter/backend
         run: pipenv run test
-
 
   build:
     name: Build
