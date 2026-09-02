@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 flask = "*"
-uwsgi = "*"
+gunicorn = "*"
 flask-cors = "*"
 pytest = "*"
 
@@ -18,7 +18,7 @@ coverage = "*"
 python_version = "3.10"
 
 [scripts]
-serve = "flask --app . run --port 5000 --debug"
+serve = "gunicorn --bind 0.0.0.0:5000 --chdir .. backend:app"
 test = "pytest -v"
 lint = "flake8"
 report = "coverage run -m pytest -v"
