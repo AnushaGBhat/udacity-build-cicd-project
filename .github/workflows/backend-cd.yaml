@@ -23,16 +23,22 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+
       - name: Install Pipenv
         run: pip install pipenv
 
       - name: Install dependencies
         working-directory: starter/backend
-        run: pipenv install
+        run: pipenv install --dev
 
       - name: Run lint
         working-directory: starter/backend
         run: pipenv run lint
+
 
   test:
     name: Test
@@ -47,16 +53,22 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+
       - name: Install Pipenv
         run: pip install pipenv
 
       - name: Install dependencies
         working-directory: starter/backend
-        run: pipenv install
+        run: pipenv install --dev
 
       - name: Run tests
         working-directory: starter/backend
         run: pipenv run test
+
 
   build:
     name: Build and Push
@@ -87,6 +99,7 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ${{ steps.login-ecr.outputs.registry }}/backend:${{ github.sha }}
+
 
   deploy:
     name: Deploy Backend
