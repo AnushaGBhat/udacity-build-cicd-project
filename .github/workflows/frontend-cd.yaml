@@ -80,7 +80,7 @@ jobs:
         working-directory: starter/frontend
         run: |
           docker build \
-            --build-arg=REACT_APP_MOVIE_API_URL=http://a417eff047524d768bbb5f4752d6cd3-453248115.us-east-1.elb.amazonaws.com/movies \
+            --build-arg=REACT_APP_MOVIE_API_URL=http://a1fa18edf56ac402d9755727357322a4-118565992.us-east-1.elb.amazonaws.com/movies \
             -t ${{ steps.login-ecr.outputs.registry }}/frontend:${{ github.sha }} .
 
       - name: Push Docker image
@@ -114,3 +114,15 @@ jobs:
         run: |
           kustomize edit set image frontend=${{ secrets.ECR_FRONTEND_REPOSITORY }}:${{ github.sha }}
           kustomize build | kubectl apply -f -
+
+      - name: Verify Kubernetes deployment
+        run: |
+          kubectl rollout status deployment/frontend --timeout=180s || true
+          echo "----- Logging - kubectl get all ---- "
+          kubectl get all
+          echo "----- Logging - kubectl describe deploy ----- "
+          kubectl describe deploy frontend
+
+      - name: Verify Frontend ECR image
+        run: |
+          AWS_PAGER="" aws ecr describe-images --repository-name frontend --region us-east-1 --query 'sort_by(imageDetails,&imagePushedAt)[-1].{Tags:imageTags,Digest:imageDigest,PushedAt:imagePushedAt}' --output table
