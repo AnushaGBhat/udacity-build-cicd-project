@@ -80,7 +80,7 @@ jobs:
         working-directory: starter/frontend
         run: |
           docker build \
-            --build-arg=REACT_APP_MOVIE_API_URL=http://a3515d94b33f94c208046dd7ee73cc68-1560528932.us-east-1.elb.amazonaws.com/movies \
+            --build-arg=REACT_APP_MOVIE_API_URL=http://a3515d94b33f94c208046dd7ee73cc68-1560528932.us-east-1.elb.amazonaws.com \
             -t ${{ steps.login-ecr.outputs.registry }}/frontend:${{ github.sha }} .
 
       - name: Push Docker image
